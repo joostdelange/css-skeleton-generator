@@ -26,6 +26,7 @@ const CALC_MASK = {
   h: 0b1000,
 };
 export default {
+  name: "Resizable",
   props: {
     width: {
       default: undefined,
@@ -424,7 +425,6 @@ export default {
       }
     },
   },
-  name: "v-resizable",
 };
 </script>
 

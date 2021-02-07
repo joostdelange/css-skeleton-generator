@@ -1,113 +1,25 @@
-<template lang="pug">
-.container  
-  .resize-container(
-    id="resize-container"
-    tabindex="0"
-    @click.self="active = {}"
-    @keydown="keyboard"
-  )
-    resizable(
-      v-for="item in items"
-      :key="item.id"
-      :width="item.width"
-      :height="item.height"
-      :left="item.left"
-      :top="item.top"
-      :fit-parent="true"
-      :class="{ 'active': item.id === active.id }"
-      drag-selector=".resizable-content"
-      @resize:end="value => handler(item, value)"
-      @drag:end="value => handler(item, value)"
-      @click="focus"
-    )
-      .resizable-content
-        .close(
-          v-if="item.id === active.id"
-          @click="remove"
-        ) ×
-  .resize-sidebar
-    button(@click="create") add
-    ul
-      li width: {{ active.width }}
-      li height: {{ active.height }}
-      li top: {{ active.top }}
-      li left: {{ active.left }}
-    button(@click="copy") copy
-    textarea(id="css") {{ styles }}
-    pre {{ styles }}
+<template>
+  <div v-if="!loading" class="default">
+    <container v-model:items="items" v-model:active="active" v-model:settings="settings" />
+    <sidebar v-model:items="items" v-model:active="active" v-model:settings="settings" />
+  </div>
 </template>
 
 <script setup>
 import { ref, computed, watch, onMounted } from 'vue';
-import resizable from './Resizable.vue';
+import sidebar from '@/components/Sidebar.vue';
+import container from '@/components/Container.vue';
 
 const items = ref([]);
-const fallback = { width: 100, height: 100, left: 0, top: 0 };
+const settings = ref({});
 const active = ref({});
+const loading = ref(true);
 
-const images = computed(() => items.value.map((item) => `linear-gradient(#ECEAED ${item.height}, transparent 0)`));
-const sizes = computed(() => items.value.map((item) => `${item.width}px ${item.height}px`));
-const positions = computed(() => items.value.map((item) => `${item.top}px ${item.left}px`));
-const styles = computed(() => `
-background-image:
-  ${images.value.join(',\n  ')};
-background-size:
-  ${sizes.value.join(',\n  ')};
-background-position:
-  ${positions.value.join(',\n  ')};
-`);
-const containerSize = computed(() => {
-  const resizeContainer = document.getElementById('resize-container');
-
-  return { width: resizeContainer?.clientWidth, height: resizeContainer?.clientHeight };
+onMounted(() => {
+  items.value = JSON.parse(localStorage.getItem('items')) || [];
+  settings.value = JSON.parse(localStorage.getItem('settings')) || { width: 800, height: 600 };
+  loading.value = false;
 });
-
-const handler = (item, data) => {
-  item.width = data.width;
-  item.height = data.height;
-  item.left = data.left;
-  item.top = data.top;
-  active.value = item;
-};
-const create = () => {
-  items.value.push({ ...(active.value.id ? active.value : fallback), id: items.value.length + 1 });
-  active.value = items.value[items.value.length - 1];
-};
-const remove = () => {
-  items.value.splice(items.value.findIndex(item => item.id === active.value.id), 1);
-  active.value = items.value.length ? items.value[items.value.length - 1] : {};
-};
-const copy = () => {
-  document.getElementById('css').select();
-  document.execCommand('copy');
-};
-const keyboard = (event) => {
-  if (!active.value.id) return false;
-
-  const steps = event.shiftKey ? 10 : 1;
-
-  if (event.keyCode === 38) active.value.top -= (active.value.top < steps ? active.value.top : steps);
-  if (event.keyCode === 39) {
-    const rightPosition = active.value.left + active.value.width;
-    const rightSpaceLeft = containerSize.value.width - rightPosition;
-    
-    active.value.left += (rightPosition + steps > containerSize.value.width ? rightSpaceLeft : steps)
-  };
-  if (event.keyCode === 40) {
-    const topPosition = active.value.top + active.value.height;
-    const topSpaceLeft = containerSize.value.height - topPosition;
-    
-    active.value.top += (topPosition + steps > containerSize.value.height ? topSpaceLeft : steps)
-  };
-  if (event.keyCode === 37) active.value.left -= (active.value.left < steps ? active.value.left : steps);
-  if (event.keyCode === 8) remove();
-
-  localStorage.setItem('items', JSON.stringify(items.value));
-};
-
-const focus = () => document.getElementById('resize-container').focus();
-
-onMounted(() => items.value = localStorage.getItem('items') ? JSON.parse(localStorage.getItem('items')) : []);
 
 watch(
   () => active,
@@ -117,60 +29,40 @@ watch(
   },
   { deep: true },
 );
+watch(
+  () => settings,
+  ({ value }) => localStorage.setItem('settings', JSON.stringify(settings.value)),
+  { deep: true },
+);
 </script>
 
 <style>
 body {
   margin: 0;
-  font-family: sans-serif;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  background: var(--white);
 }
-.container {
-  width: 100%;
-  height: 100vh;
+:root {
+  --white: #ffffff;
+  --grey-100: #f9f9f9;
+  --grey-200: #eceaed;
+  --grey-300: #d3d3d3;
+  --red: #ef476f;
+  --yellow: #ffd166;
+  --green: #06d6a0;
+  --blue: #118ab2;
+  --dark-blue: #073b4c;
+  --black: #000000;
+  --shadow: 0 0 5px rgba(0, 0, 0, .2);
+  --transition: all .2s ease;
+}
+.default {
+  min-width: 100%;
+  width: min-content;
+  min-height: 100vh;
   display: flex;
   position: relative;
-}
-.resize-container {
-  width: 100%;
-  outline: none;
-}
-.resize-sidebar {
-  width: 500px;
-  height: 100%;
-}
-.resizable-content {
-  height: 100%;
-  width: 100%;
-  border: 1px solid #ECEAED;
-  background: #ECEAED;
-  position: relative;
-}
-.resizable-component.active .resizable-content {
-  border: 1px solid lightgray;
-  z-index: 10;
-}
-.close {
-  position: absolute;
-  top: 3px;
-  right: 3px;
-  z-index: 10;
-  font-size: 12px;
-  line-height: 16px;
-  background: red;
-  color: white;
-  width: 15px;
-  height: 15px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-textarea {
-  height: 0;
-  width: 0;
-  opacity: 0;
-  position: fixed;
-  right: -20px;
-  top: -20px;
-  border: none;
+  background: var(--grey-100);
 }
 </style>

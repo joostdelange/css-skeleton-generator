@@ -64,92 +64,71 @@
           @keyup.shift="setStep(1)"
         )
     button(@click="copy") copy
-    textarea(ref="css") {{ styles }}
+    textarea(id="css") {{ styles }}
     pre {{ styles }}
 </template>
 
-<script>
+<script setup>
+import { ref, computed, watch, onMounted, useContext } from 'vue';
 import resizable from './Resizable.vue';
 
-export default {
-  name: "App",
-  components: { resizable },
-  data() {
-    return {
-      items: [],
-      default: { width: 100, height: 100, left: 0, top: 0 },
-      active: {},
-      step: 1,
-      timeout: null,
-    };
-  },
-  computed: {
-    images() {
-      return this.items.map((item) => `linear-gradient(#ECEAED ${item.height}, transparent 0)`);
-    },
-    sizes() {
-      return this.items.map((item) => `${item.width}px ${item.height}px`);
-    },
-    positions() {
-      return this.items.map((item) => `${item.top}px ${item.left}px`);
-    },
-    styles() {
-      return `
+const items = ref([]);
+const fallback = { width: 100, height: 100, left: 0, top: 0 };
+const active = ref({});
+const step = ref(1);
+const timeout = ref(null);
+const { attrs } = useContext();
+
+const images = computed(() => items.value.map((item) => `linear-gradient(#ECEAED ${item.height}, transparent 0)`));
+const sizes = computed(() => items.value.map((item) => `${item.width}px ${item.height}px`));
+const positions = computed(() => items.value.map((item) => `${item.top}px ${item.left}px`));
+const styles = computed(() => `
 background-image:
-  ${this.images.join(',\n  ')};
+  ${images.value.join(',\n  ')};
 background-size:
-  ${this.sizes.join(',\n  ')};
+  ${sizes.value.join(',\n  ')};
 background-position:
-  ${this.positions.join(',\n  ')};
-      `;
-    },
-  },
-  watch: {
-    active: {
-      handler(value) {
-        if (value.id) {
-          this.items[this.items.findIndex((item) => item.id === value.id)] = value;
-        }
-      },
-      deep: true,
-    },
-    items: {
-      handler(value) {
-        if (this.timeout) {
-          clearTimeout(this.timeout);
-        }
-        this.timeout = setTimeout(() => localStorage.setItem('items', JSON.stringify(value)), 1000);
-      },
-      deep: true,
-    },
-  },
-  mounted() {
-    this.items = localStorage.getItem('items') ? JSON.parse(localStorage.getItem('items')) : [];
-  },
-  methods: {
-    handler(item, data) {
-      item.width = data.width;
-      item.height = data.height;
-      item.left = data.left;
-      item.top = data.top;
-      this.active = item;
-    },
-    create() {
-      this.items.push({ ...(this.active.id ? this.active : this.default), id: this.items.length + 1 });
-    },
-    remove() {
-      this.items.splice(this.items.findIndex(item => item.id === this.active.id), 1);
-      this.active = this.items.length ? this.items[this.items.length - 1] : {};
-    },
-    copy() {
-      this.$refs.css.select();
-      document.execCommand('copy');
-    },
-    setStep(amount) {
-      this.step = amount;
-    },
-  },
+  ${positions.value.join(',\n  ')};
+`);
+
+const handler = (item, data) => {
+  item.width = data.width;
+  item.height = data.height;
+  item.left = data.left;
+  item.top = data.top;
+  active.value = item;
 };
+const create = () => {
+  items.value.push({ ...(active.value.id ? active.value : fallback), id: items.value.length + 1 });
+};
+const remove = () => {
+  items.value.splice(items.value.findIndex(item => item.id === active.value.id), 1);
+  active.value = items.value.length ? items.value[items.value.length - 1] : {};
+};
+const copy = () => {
+  document.getElementById('css').select();
+  document.execCommand('copy');
+};
+const setStep = (amount) => {
+  step.value = amount;
+};
+
+onMounted(() => items.value = localStorage.getItem('items') ? JSON.parse(localStorage.getItem('items')) : []);
+
+watch(
+  () => active,
+  ({ value }) => items.value[items.value.findIndex((item) => item.id === value.id)] = value,
+  { deep: true },
+);
+
+watch(
+  () => items,
+  ({ value }) => {
+    if (timeout.value) clearTimeout(timeout.value);
+    timeout.value = setTimeout(() => localStorage.setItem('items', JSON.stringify(value)), 1000);
+  },
+  { deep: true },
+);
 </script>
 
 <style>

@@ -39,15 +39,18 @@ const emit = defineEmit(['update:items', 'update:active']);
 const copied = ref(false);
 const fallback = { width: 100, height: 100, left: 0, top: 0 };
 
-const images = computed(() => props.items.map((item) => `linear-gradient(#ECEAED ${item.height}, transparent 0)`).join(','));
-const sizes = computed(() => props.items.map((item) => `${item.width}px ${item.height}px`).join(','));
-const positions = computed(() => props.items.map((item) => `${item.top}px ${item.left}px`).join(','));
+const images = computed(() => props.items.map((item) => `linear-gradient(#ECEAED ${item.height}, transparent 0)`).join(',\n  '));
+const sizes = computed(() => props.items.map((item) => `${item.width}px ${item.height}px`).join(',\n  '));
+const positions = computed(() => props.items.map((item) => `${item.top}px ${item.left}px`).join(',\n  '));
 const styles = computed(() => 
 `width: ${props.settings.width}px;
 height: ${props.settings.height}px;
-background-image: ${images.value};
-background-size: ${sizes.value};
-background-position: ${positions.value};
+background-image:
+  ${images.value};
+background-size:
+  ${sizes.value};
+background-position:
+  ${positions.value};
 `);
 
 const copy = () => {

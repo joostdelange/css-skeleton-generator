@@ -45,7 +45,7 @@ const fallback = { width: 100, height: 100, left: 0, top: 0 };
 
 const images = computed(() => props.items.map((item) => {
   if (item.type === 'radial') {
-    return `radial-gradient(circle ${item.width}px at ${item.width}px ${item.width}px, #ECEAED ${item.width}px, transparent ${item.width}px)`;
+    return `radial-gradient(circle ${item.width / 2}px at ${item.width / 2}px ${item.width / 2}px, #ECEAED ${item.width / 2}px, transparent ${item.width / 2}px)`;
   }
   return `linear-gradient(#ECEAED ${item.height}px, transparent 0)`;
 }).join(',\n  '));

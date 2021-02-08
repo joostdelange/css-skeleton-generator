@@ -9,10 +9,6 @@
         <i class="material-icons sidebar__button-icon">add_circle</i>
         circle
       </button>
-      <button class="sidebar__button error" @click="clear">
-        <i class="material-icons sidebar__button-icon">remove_circle</i>
-        clear
-      </button>
     </div>
     <h3 class="sidebar__title">Item</h3>
     <div class="sidebar__row spacing-small">
@@ -55,19 +51,43 @@
     <div class="sidebar__row">
       <div class="sidebar__group">
         <label class="sidebar__label">Generated css ({{ !copied ? 'click to copy' : 'copied!' }})</label>
-        <textarea :value="styles" id="backgrounds" readonly class="sidebar__textarea" @click="copy" />
+        <textarea :value="styles" id="backgrounds" readonly :rows="8" class="sidebar__textarea" @click="copy" />
       </div>
     </div>
+    <div class="sidebar__row fixed-bottom">
+      <button class="sidebar__button" @click="keyboardPopup = true">
+        <i class="material-icons sidebar__button-icon">keyboard</i>
+        keyboard shortcuts
+      </button>
+      <button class="sidebar__button error" @click="clear">
+        <i class="material-icons sidebar__button-icon">remove_circle</i>
+        clear
+      </button>
+    </div>
+    <Teleport to="body">
+      <modal v-model="keyboardPopup">
+        <h3 class="sidebar__title">Keyboard shortcuts</h3>
+        <p class="sidebar__text">
+          Some actions can be done in multiple ways,
+          like moving around selected items by either using your mouse
+          or the arrow keys in, optionally in combination with shift for quicker use.
+        </p>
+        <keyboardShortcuts />
+      </modal>
+    </Teleport>
   </div>
 </template>
 
 <script setup>
 import { ref, computed, defineProps, defineEmit } from 'vue';
+import modal from '@/components/Modal.vue';
+import keyboardShortcuts from '@/components/KeyboardShortcuts.vue';
 
 const props = defineProps({ items: Array, active: Object, settings: Object });
 const emit = defineEmit(['update:items', 'update:active']);
 
 const copied = ref(false);
+const keyboardPopup = ref(false);
 const fallback = { width: 100, height: 100, left: 0, top: 0 };
 
 const images = computed(() => props.items.map((item) => {
@@ -113,6 +133,7 @@ const create = (type) => {
 
   emit('update:items', [...props.items, created]);
   emit('update:active', created);
+  document.getElementsByClassName('container')[0].focus();
 };
 const clear = () => {
   emit('update:items', []);
@@ -133,9 +154,15 @@ const clear = () => {
   bottom: 0;
   background: var(--white);
   z-index: 100;
+  overflow: auto;
   border-left: 1px solid var(--grey-200);
 }
 .sidebar__title {
+  margin: 0 0 20px 0;
+}
+.sidebar__text {
+  font-size: 15px;
+  line-height: 20px;
   margin: 0 0 20px 0;
 }
 .sidebar__button {
@@ -170,6 +197,11 @@ const clear = () => {
 }
 .sidebar__row.spacing-small {
   margin: 0 0 10px 0;
+}
+.sidebar__row.fixed-bottom {
+  position: fixed;
+  bottom: 0;
+  right: 0;
 }
 .sidebar__row .sidebar__button {
   margin: 0 10px 0 0;

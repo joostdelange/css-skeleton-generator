@@ -43,9 +43,17 @@ const emit = defineEmit(['update:items', 'update:active']);
 const copied = ref(false);
 const fallback = { width: 100, height: 100, left: 0, top: 0 };
 
-const images = computed(() => props.items.map((item) => `linear-gradient(#ECEAED ${item.height}px, transparent 0)`).join(',\n  '));
-const sizes = computed(() => props.items.map((item) => `${item.width}px ${props.settings.height}px`).join(',\n  '));
-const positions = computed(() => props.items.map((item) => `${item.left}px ${item.top}px`).join(',\n  '));
+const images = computed(() => props.items.map((item) => {
+  if (item.type === 'radial') {
+    return `radial-gradient(circle ${item.width}px at ${item.left}px ${item.top}, #ECEAED ${item.width}px, transparent ${item.width}px)`;
+  }
+  return `linear-gradient(#ECEAED ${item.height}px, transparent 0)`;
+}).join(',\n  '));
+const sizes = computed(() => props.items.map((item) => 
+  `${item.width}px ${props.settings.height}px`).join(',\n  '));
+const positions = computed(() => props.items.map((item) => 
+  `${item.left}px ${item.top}px`).join(',\n  '));
+
 const styles = computed(() => 
 `width: ${props.settings.width}px;
 height: ${props.settings.height}px;

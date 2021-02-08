@@ -21,10 +21,7 @@
       @drag:end="value => handler(item, value)"
       @click="focus"
     >
-      <div
-        :style="item.type === 'radial' ? { borderRadius: '50%' } : {}"
-        class="content"
-      >
+      <div :style="styles(item)" class="content">
         <i v-if="item.id === active.id" class="material-icons close" @click="remove">close</i>
       </div>
     </resizable>
@@ -48,6 +45,12 @@ const activeHandlers = (item) => {
     return ['rb', 'lb', 'lt', 'rt'];
   }
   return ['r', 'rb', 'b', 'lb', 'l', 'lt', 't', 'rt'];
+};
+
+const styles = (item) => {
+  const radius = item.type === 'radial' ? { borderRadius: '50%' } : {};
+
+  return { ...radius, backgroundColor: item.color };
 };
 
 const clearActive = () => emit('update:active', {});
@@ -96,7 +99,7 @@ const focus = () => document.getElementsByClassName('container')[0].focus();
 .content {
   height: 100%;
   width: 100%;
-  background: var(--grey-200);
+  background-color: var(--grey-200);
   position: relative;
 }
 .close {

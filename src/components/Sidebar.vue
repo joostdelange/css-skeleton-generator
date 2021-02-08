@@ -35,6 +35,12 @@
         <input v-model.number="active.left" type="number" :disabled="active.id === undefined" :min="0" class="sidebar__input">
       </div>
     </div>
+    <div class="sidebar__row">
+      <div class="sidebar__group">
+        <label class="sidebar__label">Color</label>
+        <input v-model="color" type="color" :disabled="active.id === undefined" class="sidebar__input color-picker">
+      </div>
+    </div>
     <h3 class="sidebar__title">Container</h3>
     <div class="sidebar__row">
       <div class="sidebar__group">
@@ -65,10 +71,12 @@ const copied = ref(false);
 const fallback = { width: 100, height: 100, left: 0, top: 0 };
 
 const images = computed(() => props.items.map((item) => {
-  if (item.type === 'radial') {
-    return `radial-gradient(circle ${item.width / 2}px at ${item.width / 2}px ${item.width / 2}px, #ECEAED ${item.width / 2}px, transparent ${item.width / 2}px)`;
-  }
-  return `linear-gradient(#ECEAED ${item.height}px, transparent 0)`;
+  const radialShape = `circle ${item.width / 2}px at ${item.width / 2}px ${item.width / 2}px`;
+  const radialSize = `${item.color} ${item.width / 2}px`;
+  const radialBlur = `transparent ${item.width / 2}px`;
+
+  if (item.type === 'radial') return `radial-gradient(${radialShape}, ${radialSize}, ${radialBlur})`;
+  return `linear-gradient(${item.color} ${item.height}px, transparent 0)`;
 }).join(',\n  '));
 const sizes = computed(() => props.items.map((item) => 
   `${item.width}px ${props.settings.height}px`).join(',\n  '));
@@ -86,6 +94,11 @@ background-position:
   ${positions.value};
 background-repeat: repeat-y;`);
 
+const color = computed({
+  get: () => props.active.color || '#f9f9f9',
+  set: (value) => props.active.color = value,
+});
+
 const copy = () => {
   document.getElementById('backgrounds').select();
   document.execCommand('copy');
@@ -96,8 +109,10 @@ const copy = () => {
 const create = (type) => {
   const item = props.active.id !== undefined ? props.active : fallback;
   const id = props.items.length ? props.items[props.items.length - 1].id + 1 : 0;
+  const created = { ...item, id, type, color: '#ECEAED' };
 
-  emit('update:items', [...props.items, { ...item, id, type }]);
+  emit('update:items', [...props.items, created]);
+  emit('update:active', created);
 };
 const clear = () => {
   emit('update:items', []);
@@ -194,6 +209,16 @@ const clear = () => {
 }
 .sidebar__textarea:focus, .sidebar__input:focus {
   border: 1px solid var(--grey-300);
+}
+.sidebar__input.color-picker {
+  border: none;
+  padding: 0;
+  height: 45px;
+  background: none;
+}
+.sidebar__input.color-picker::-webkit-color-swatch {
+  border: 1px solid var(--grey-200);
+  border-radius: 4px;
 }
 .sidebar__textarea {
   resize: vertical;

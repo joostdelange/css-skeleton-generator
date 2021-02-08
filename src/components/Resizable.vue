@@ -428,120 +428,60 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .resizable-component {
   position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .resizable-component > .resizable-r {
-  display: block;
-  position: absolute;
-  z-index: 90;
-  touch-action: none;
-  user-select: none;
-  -moz-user-select: none;
-  -webkit-user-select: none;
   cursor: e-resize;
-  width: 12px;
-  right: -6px;
-  top: 0;
-  height: 100%;
+  right: -5px;
 }
 .resizable-component > .resizable-rb {
-  display: block;
-  position: absolute;
-  touch-action: none;
-  user-select: none;
-  -moz-user-select: none;
-  -webkit-user-select: none;
   cursor: se-resize;
-  width: 12px;
-  height: 12px;
-  right: -6px;
-  bottom: -6px;
-  z-index: 91;
+  right: -5px;
+  bottom: -5px;
 }
 .resizable-component > .resizable-b {
-  display: block;
-  position: absolute;
-  z-index: 90;
-  touch-action: none;
-  user-select: none;
-  -moz-user-select: none;
-  -webkit-user-select: none;
   cursor: s-resize;
-  height: 12px;
-  bottom: -6px;
-  width: 100%;
-  left: 0;
+  bottom: -5px;
 }
 .resizable-component > .resizable-lb {
-  display: block;
-  position: absolute;
-  touch-action: none;
-  user-select: none;
-  -moz-user-select: none;
-  -webkit-user-select: none;
   cursor: sw-resize;
-  width: 12px;
-  height: 12px;
-  left: -6px;
-  bottom: -6px;
-  z-index: 91;
+  left: -5px;
+  bottom: -5px;
 }
 .resizable-component > .resizable-l {
-  display: block;
-  position: absolute;
-  z-index: 90;
-  touch-action: none;
-  user-select: none;
-  -moz-user-select: none;
-  -webkit-user-select: none;
   cursor: w-resize;
-  width: 12px;
-  left: -6px;
-  height: 100%;
-  top: 0;
+  left: -5px;
 }
 .resizable-component > .resizable-lt {
-  display: block;
-  position: absolute;
-  touch-action: none;
-  user-select: none;
-  -moz-user-select: none;
-  -webkit-user-select: none;
   cursor: nw-resize;
-  width: 12px;
-  height: 12px;
-  left: -6px;
-  top: -6px;
-  z-index: 91;
+  left: -5px;
+  top: -5px;
 }
 .resizable-component > .resizable-t {
-  display: block;
-  position: absolute;
-  z-index: 90;
-  touch-action: none;
-  user-select: none;
-  -moz-user-select: none;
-  -webkit-user-select: none;
   cursor: n-resize;
-  height: 12px;
-  top: -6px;
-  width: 100%;
-  left: 0;
+  top: -5px;
 }
 .resizable-component > .resizable-rt {
+  cursor: ne-resize;
+  right: -5px;
+  top: -5px;
+}
+.resizable-component > div[class^="resizable-"] {
   display: block;
   position: absolute;
   touch-action: none;
   user-select: none;
-  -moz-user-select: none;
-  -webkit-user-select: none;
-  cursor: ne-resize;
-  width: 12px;
-  height: 12px;
-  right: -6px;
-  top: -6px;
   z-index: 91;
+  width: 8px;
+  height: 8px;
+}
+.resizable-component.active > div[class^="resizable-"] {
+  border: 1px solid var(--grey-300);
+  background: var(--white);
 }
 </style>

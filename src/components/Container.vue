@@ -14,13 +14,17 @@
       :left="item.left"
       :top="item.top"
       :fit-parent="true"
+      :active="activeHandlers(item)"
       :class="{ 'active': item.id === active.id }"
       drag-selector=".content"
       @resize:end="value => handler(item, value)"
       @drag:end="value => handler(item, value)"
       @click="focus"
     >
-      <div class="content">
+      <div
+        :style="item.type === 'radial' ? { borderRadius: '50%' } : {}"
+        class="content"
+      >
         <i v-if="item.id === active.id" class="material-icons close" @click="remove">close</i>
       </div>
     </resizable>
@@ -39,6 +43,12 @@ const containerSize = computed(() => {
 
   return { width: resizeContainer?.clientWidth, height: resizeContainer?.clientHeight };
 });
+const activeHandlers = (item) => {
+  if (item.type === 'radial') {
+    return ['rb', 'lb', 'lt', 'rt'];
+  }
+  return ['r', 'rb', 'b', 'lb', 'l', 'lt', 't', 'rt'];
+};
 
 const clearActive = () => emit('update:active', {});
 const keyboard = (event) => {

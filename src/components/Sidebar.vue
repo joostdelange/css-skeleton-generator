@@ -1,12 +1,16 @@
 <template>
   <div class="sidebar">
     <div class="sidebar__row">
-      <button class="sidebar__button success" @click="create">
-        <i class="material-icons sidebar__button-icon">add</i>
-        add item
+      <button class="sidebar__button success" @click="create('linear')">
+        <i class="material-icons sidebar__button-icon">add_box</i>
+        rectangle
+      </button>
+      <button class="sidebar__button success" @click="create('radial')">
+        <i class="material-icons sidebar__button-icon">add_circle</i>
+        circle
       </button>
       <button class="sidebar__button error" @click="clear">
-        <i class="material-icons sidebar__button-icon">delete</i>
+        <i class="material-icons sidebar__button-icon">remove_circle</i>
         clear
       </button>
     </div>
@@ -51,7 +55,7 @@ background-size:
   ${sizes.value};
 background-position:
   ${positions.value};
-`);
+background-repeat: repeat-y;`);
 
 const copy = () => {
   document.getElementById('backgrounds').select();
@@ -60,11 +64,11 @@ const copy = () => {
   copied.value = true;
   setTimeout(() => copied.value = false, 2000);
 };
-const create = () => {
-  const item = props.active.id ? props.active : fallback;
+const create = (type) => {
+  const item = props.active.id !== undefined ? props.active : fallback;
   const id = props.items.length ? props.items[props.items.length - 1].id + 1 : 0;
 
-  emit('update:items', [...props.items, { ...item, id }]);
+  emit('update:items', [...props.items, { ...item, id, type }]);
 };
 const clear = () => {
   emit('update:items', []);

@@ -14,15 +14,36 @@
         clear
       </button>
     </div>
+    <h3 class="sidebar__title">Item</h3>
+    <div class="sidebar__row spacing-small">
+      <div class="sidebar__group">
+        <label class="sidebar__label">Width</label>
+        <input v-model.number="active.width" type="number" :disabled="active.id === undefined" :min="0" class="sidebar__input">
+      </div>
+      <div class="sidebar__group">
+        <label class="sidebar__label">Height</label>
+        <input v-model.number="active.height" type="number" :disabled="active.id === undefined" :min="0" class="sidebar__input">
+      </div>
+    </div>
+    <div class="sidebar__row">
+      <div class="sidebar__group">
+        <label class="sidebar__label">Top</label>
+        <input v-model.number="active.top" type="number" :disabled="active.id === undefined" :min="0" class="sidebar__input">
+      </div>
+      <div class="sidebar__group">
+        <label class="sidebar__label">Left</label>
+        <input v-model.number="active.left" type="number" :disabled="active.id === undefined" :min="0" class="sidebar__input">
+      </div>
+    </div>
     <h3 class="sidebar__title">Container</h3>
     <div class="sidebar__row">
       <div class="sidebar__group">
         <label class="sidebar__label">Width</label>
-         <input v-model.number="settings.width" type="number" class="sidebar__input">
+        <input v-model.number="settings.width" type="number" class="sidebar__input">
       </div>
       <div class="sidebar__group">
         <label class="sidebar__label">Height</label>
-         <input v-model.number="settings.height" type="number" class="sidebar__input">
+        <input v-model.number="settings.height" type="number" class="sidebar__input">
       </div>
     </div>
     <div class="sidebar__row">
@@ -132,6 +153,9 @@ const clear = () => {
   display: flex;
   margin: 0 0 20px 0;
 }
+.sidebar__row.spacing-small {
+  margin: 0 0 10px 0;
+}
 .sidebar__row .sidebar__button {
   margin: 0 10px 0 0;
 }
@@ -164,6 +188,9 @@ const clear = () => {
   border-radius: 4px;
   outline: none;
   transition: var(--transition);
+}
+.sidebar__textarea:disabled, .sidebar__input:disabled {
+  background: var(--grey-100);
 }
 .sidebar__textarea:focus, .sidebar__input:focus {
   border: 1px solid var(--grey-300);

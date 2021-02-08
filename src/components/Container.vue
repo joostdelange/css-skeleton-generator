@@ -75,7 +75,7 @@ const keyboard = (event) => {
   localStorage.setItem('items', JSON.stringify(props.items));
 };
 const handler = (item, { width, height, left, top }) => {
-  emit('update:active', { ...item, width, height, left, top });
+  emit('update:active', { ...item, width, height: item.type === 'radial' ? width : height, left, top });
 };
 const remove = () => {
   props.items.splice(props.items.findIndex(item => item.id === props.active.id), 1);
@@ -99,20 +99,16 @@ const focus = () => document.getElementsByClassName('container')[0].focus();
   background: var(--grey-200);
   position: relative;
 }
-.resizable-component.active .content {
-  border: 1px solid var(--grey-300);
-  z-index: 10;
-}
 .close {
   position: absolute;
-  top: 3px;
-  right: 3px;
+  top: 5px;
+  right: 5px;
   z-index: 10;
-  font-size: 12px;
+  font-size: 11px;
   background: var(--red);
   color: var(--white);
-  width: 15px;
-  height: 15px;
+  width: 13px;
+  height: 13px;
   display: flex;
   justify-content: center;
   align-items: center;

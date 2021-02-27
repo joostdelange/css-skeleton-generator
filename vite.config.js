@@ -7,4 +7,7 @@ export default {
   resolve: {
     alias: [{ find: '@', replacement: resolve(__dirname, 'src') }],
   },
+  build: {
+    minify: 'esbuild',
+  },
 };

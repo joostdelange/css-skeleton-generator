@@ -33,7 +33,7 @@ import { computed } from 'vue';
 import resizable from '@/components/Resizable.vue';
 
 const props = defineProps({ items: Array, active: Object, settings: Object });
-const emit = defineEmit(['update:items', 'update:active']);
+const emit = defineEmits(['update:items', 'update:active']);
 
 const containerSize = computed(() => {
   const resizeContainer = document.getElementById('resize-container');

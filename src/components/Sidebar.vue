@@ -84,7 +84,7 @@ import modal from '@/components/Modal.vue';
 import keyboardShortcuts from '@/components/KeyboardShortcuts.vue';
 
 const props = defineProps({ items: Array, active: Object, settings: Object });
-const emit = defineEmit(['update:items', 'update:active']);
+const emit = defineEmits(['update:items', 'update:active']);
 
 const copied = ref(false);
 const keyboardPopup = ref(false);

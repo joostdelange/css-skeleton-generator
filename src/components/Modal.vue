@@ -10,7 +10,7 @@
 
 <script setup>
 const props = defineProps({ modelValue: Boolean });
-const emit = defineEmit(['update:modelValue']);
+const emit = defineEmits(['update:modelValue']);
 
 const close = () => emit('update:modelValue', false);
 </script>

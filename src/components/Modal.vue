@@ -9,8 +9,6 @@
 </template>
 
 <script setup>
-import { defineProps, defineEmit } from 'vue';
-
 const props = defineProps({ modelValue: Boolean });
 const emit = defineEmit(['update:modelValue']);
 

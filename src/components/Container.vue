@@ -29,7 +29,7 @@
 </template>
 
 <script setup>
-import { computed, defineProps, defineEmit } from 'vue';
+import { computed } from 'vue';
 import resizable from '@/components/Resizable.vue';
 
 const props = defineProps({ items: Array, active: Object, settings: Object });

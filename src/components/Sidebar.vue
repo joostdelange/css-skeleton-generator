@@ -79,7 +79,7 @@
 </template>
 
 <script setup>
-import { ref, computed, defineProps, defineEmit } from 'vue';
+import { ref, computed } from 'vue';
 import modal from '@/components/Modal.vue';
 import keyboardShortcuts from '@/components/KeyboardShortcuts.vue';
 

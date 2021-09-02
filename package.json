@@ -7,7 +7,7 @@
     "build": "vite build"
   },
   "dependencies": {
-    "vue": "^3.2.6"
+    "vue": "^3.2.7"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^1.6.0",

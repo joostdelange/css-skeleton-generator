@@ -25,21 +25,10 @@
   resolved "https://registry.yarnpkg.com/@types/estree/-/estree-0.0.48.tgz#18dc8091b285df90db2f25aa7d906cfc394b7f74"
   integrity sha512-LfZwXoGUDo0C3me81HXgkBg5CTQYb6xzEl+fNmbO4JdRiSKQ8A0GD1OBBvKAIsbCUgoyAty7m99GqqMQe784ew==
 
-"@vitejs/plugin-vue@^1.6.0":
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/@vitejs/plugin-vue/-/plugin-vue-1.6.0.tgz#e5558e20c20e9098cd5bd65b9901fdcd2c354983"
-  integrity sha512-n3i8htn8pTg9M+kM3cnEfsPZx/6ngInlTroth6fA1LQTJq5aTVQ8ggaE5pPoAy9vCgHPtcaXMzwpldhqRAkebQ==
-
-"@vue/compiler-core@3.2.6":
-  version "3.2.6"
-  resolved "https://registry.yarnpkg.com/@vue/compiler-core/-/compiler-core-3.2.6.tgz#7162bb0670273f04566af0d353009187ab577915"
-  integrity sha512-vbwnz7+OhtLO5p5i630fTuQCL+MlUpEMTKHuX+RfetQ+3pFCkItt2JUH+9yMaBG2Hkz6av+T9mwN/acvtIwpbw==
-  dependencies:
-    "@babel/parser" "^7.15.0"
-    "@babel/types" "^7.15.0"
-    "@vue/shared" "3.2.6"
-    estree-walker "^2.0.2"
-    source-map "^0.6.1"
+"@vitejs/plugin-vue@^1.6.1":
+  version "1.6.1"
+  resolved "https://registry.yarnpkg.com/@vitejs/plugin-vue/-/plugin-vue-1.6.1.tgz#a40a06661af61fdc1bebdfb811b28f50ad39dfb3"
+  integrity sha512-tX2Ju8fOyEtfstfmwjfSJcstTFXwzdFAUbYJ5bWWifvKIgbe6B0FbM8l3Wb7wOaaxKn4FYkii7WQnAPcsTqaIA==
 
 "@vue/compiler-core@3.2.8":
   version "3.2.8"
@@ -51,14 +40,6 @@
     "@vue/shared" "3.2.8"
     estree-walker "^2.0.2"
     source-map "^0.6.1"
-
-"@vue/compiler-dom@3.2.6":
-  version "3.2.6"
-  resolved "https://registry.yarnpkg.com/@vue/compiler-dom/-/compiler-dom-3.2.6.tgz#3764d7fe1a696e39fb2a3c9d638da0749e369b2d"
-  integrity sha512-+a/3oBAzFIXhHt8L5IHJOTP4a5egzvpXYyi13jR7CUYOR1S+Zzv7vBWKYBnKyJLwnrxTZnTQVjeHCgJq743XKg==
-  dependencies:
-    "@vue/compiler-core" "3.2.6"
-    "@vue/shared" "3.2.6"
 
 "@vue/compiler-dom@3.2.8":
   version "3.2.8"
@@ -134,11 +115,6 @@
     "@vue/runtime-core" "3.2.8"
     "@vue/shared" "3.2.8"
     csstype "^2.6.8"
-
-"@vue/shared@3.2.6":
-  version "3.2.6"
-  resolved "https://registry.yarnpkg.com/@vue/shared/-/shared-3.2.6.tgz#2c22bae88fe2b7b59fa68a9c9c4cd60bae2c1794"
-  integrity sha512-uwX0Qs2e6kdF+WmxwuxJxOnKs/wEkMArtYpHSm7W+VY/23Tl8syMRyjnzEeXrNCAP0/8HZxEGkHJsjPEDNRuHw==
 
 "@vue/shared@3.2.8":
   version "3.2.8"
